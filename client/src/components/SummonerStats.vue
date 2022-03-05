@@ -26,13 +26,6 @@
         </div>
       </div>
     </div>
-    <div v-if="!isMounted" class="height-loader">
-      <div class="d-block m-auto text-center padding-loader">
-        <div class="spinner-border text-primary" role="status">
-          <span class="sr-only"></span>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -64,6 +57,7 @@ export default {
       )
       .then((res) => {
         this.stats = res.data;
+        console.log(res.data);
         this.isMounted = true;
       })
       .catch((err) => {
@@ -73,7 +67,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .img-size {
   height: 150px;
 }

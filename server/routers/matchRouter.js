@@ -37,13 +37,13 @@ matchRouter.get(
         setTimeout(() => resolve("222"), 100);
       });
     };
-
+    console.log(req.query.region)
     var matchInfo = [];
     var matches = req.query.matches.split(",");
     const promises = matches.map(async (data) => {
       let waitForThisData = await timeout(data);
       return axios
-        .get(`https://europe.api.riotgames.com/lol/match/v5/matches/${data}`, {
+        .get(`https://${req.query.region}.api.riotgames.com/lol/match/v5/matches/${data}`, {
           headers: {
             "Accept-Charset":
               "application/x-www-form-urlencoded; charset=UTF-8",

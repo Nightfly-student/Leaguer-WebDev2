@@ -11,17 +11,23 @@
             class="input-text d-inline m-auto"
             placeholder="Search for your lol account..."
           />
-          <select v-model="summoner.region" class="d-inline" name="regions" id="regions">
+          <select
+            v-model="summoner.region"
+            class="d-inline search-summoner"
+            name="regions"
+            id="regions"
+          >
             <option value="euw1">EUW</option>
-            <option value="na">NA</option>
-            <option value="eune">EUNE</option>
-            <option value="oce">OCE</option>
-            <option value="br">BR</option>
+            <option value="na1">NA</option>
+            <option value="eun1">EUNE</option>
+            <option value="oc1">OCE</option>
+            <option value="br1">BR</option>
             <option value="ru">RU</option>
-            <option value="tr">TR</option>
-            <option value="las">LAS</option>
+            <option value="tr1">TR</option>
+            <option value="la1">LAS</option>
+            <option value="la2">LAn</option>
             <option value="kr">KR</option>
-            <option value="jp">JP</option>
+            <option value="jp1">JP</option>
           </select>
         </div>
       </div>
@@ -44,10 +50,13 @@ export default {
     search(summoner) {
       this.$router.push({
         name: "Profile",
-        params: {summonerName: summoner.summonerName, region: summoner.region },
+        params: {
+          summonerName: summoner.summonerName,
+          region: summoner.region,
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -63,16 +72,18 @@ input {
   padding: 5px;
   border: #5383e8 2px solid;
 }
+.search-summoner {
+  margin: 9px;
+  margin-left: -100px;
+  background: white;
+  padding: 1px;
+}
 .img-size {
   height: 200px;
 }
 #regions {
   position: absolute;
-  margin: 9px;
-  margin-left: -100px;
   border: #b1b1b1 2px solid;
-  background: white;
-  padding: 1px;
 }
 
 @media (max-width: 921px) {

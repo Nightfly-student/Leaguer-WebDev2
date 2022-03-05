@@ -10,11 +10,12 @@ summonerRouter.get(
     var data = {};
     await axios
       .get(
-        `https://${req.query.region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${req.query.name}`,
+        `https://${req.query.region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(req.query.name)}`,
         {
           headers: {
             "Accept-Charset":
               "application/x-www-form-urlencoded; charset=UTF-8",
+            "Accept-Language": "nl,en-US;q=0.7,en;q=0.3",
             "X-Riot-Token": process.env.RIOT_API,
           },
         }
@@ -46,6 +47,7 @@ summonerRouter.get(
           headers: {
             "Accept-Charset":
               "application/x-www-form-urlencoded; charset=UTF-8",
+            "Accept-Language": "nl,en-US;q=0.7,en;q=0.3",
             "X-Riot-Token": process.env.RIOT_API,
           },
         }
@@ -53,7 +55,7 @@ summonerRouter.get(
       .then((res) => {
         var index;
         var exists = res.data.some(function (item, i) {
-          if ((item.queueType = "RANKED_SOLO_5x5")) {
+          if (item.queueType === "RANKED_SOLO_5x5") {
             index = i;
             return true;
           }

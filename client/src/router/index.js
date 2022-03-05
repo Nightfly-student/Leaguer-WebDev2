@@ -6,13 +6,16 @@ import "../assets/style.css";
 
 import HomeView from "../views/HomeView.vue";
 import SummonerView from "../views/SummonerView.vue";
+import LoginView from "../views/LoginView.vue";
+import RegisterView from "../views/RegisterView.vue";
+import PageNotFoundView from "../views/PageNotFoundView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      name: "home",
+      name: "Home",
       component: HomeView,
       meta: {
         title: "Home",
@@ -24,6 +27,42 @@ const router = createRouter({
           {
             property: "og:description",
             content: "The home page of our example app.",
+          },
+        ],
+      },
+    },
+    {
+      path: "/login",
+      name: "Login",
+      component: LoginView,
+      meta: {
+        title: "Login",
+        metaTags: [
+          {
+            name: "description",
+            content: "The login page of our example app.",
+          },
+          {
+            property: "og:description",
+            content: "The login page of our example app.",
+          },
+        ],
+      },
+    },
+    {
+      path: "/register",
+      name: "Register",
+      component: RegisterView,
+      meta: {
+        title: "Register",
+        metaTags: [
+          {
+            name: "description",
+            content: "The Register page of our example app.",
+          },
+          {
+            property: "og:description",
+            content: "The Register page of our example app.",
           },
         ],
       },
@@ -43,6 +82,24 @@ const router = createRouter({
           {
             property: "og:description",
             content: "The Profile page of our example app.",
+          },
+        ],
+      },
+    },
+    {
+      name: "Page Not Found",
+      path: "/:pathMatch(.*)*",
+      component: PageNotFoundView,
+      meta: {
+        title: "Page Not Found",
+        metaTags: [
+          {
+            name: "description",
+            content: "The Page Not Found page of our example app.",
+          },
+          {
+            property: "og:description",
+            content: "The Page Not Found page of our example app.",
           },
         ],
       },

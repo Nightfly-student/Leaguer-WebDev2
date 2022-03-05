@@ -10,6 +10,11 @@
       />
     </div>
   </div>
+  <div v-else class="col-xl-8 col-sm-12 m-auto text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only" />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -38,23 +43,23 @@ export default {
   methods: {
     region(region) {
       if (
-        region == "euw1" ||
-        region == "eun1" ||
-        region == "tr1" ||
-        region == "ru"
+        region === "euw1" ||
+        region === "eun1" ||
+        region === "tr1" ||
+        region === "ru"
       ) {
         return "europe";
       }
       if (
-        region == "na1" ||
-        region == "br1" ||
-        region == "la1" ||
-        region == "la2" ||
-        region == "oc1"
+        region === "na1" ||
+        region === "br1" ||
+        region === "la1" ||
+        region === "la2" ||
+        region === "oc1"
       ) {
         return "americas";
       }
-      if (region == "kr" || region == "jp1") {
+      if (region === "kr" || region === "jp1") {
         return "asia";
       }
     },
@@ -70,7 +75,7 @@ export default {
             .get(
               `${import.meta.env.VITE_SERVER}/api/matches/info?matches=${
                 res.data
-              }`
+              }&region=${this.region(this.summoner.region)}`
             )
             .then((response) => {
               var sortedMatches = response.data.sort(function (a, b) {

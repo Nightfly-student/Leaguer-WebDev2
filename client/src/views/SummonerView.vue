@@ -1,6 +1,6 @@
 <template>
   <div class="container-xl pt-4">
-    <SummonerProfile @update="update()" :summoner="summoner" />
+    <SummonerProfile @update="update()" v-if="isMounted" :summoner="summoner" />
     <hr />
     <div class="row">
       <SummonerStats v-if="isMounted" :summoner="summoner" />
@@ -39,8 +39,7 @@ export default {
       axios
         .get(
           `${import.meta.env.VITE_SERVER}/api/summoners?region=${
-            this.$route.params.region
-          }&name=${this.$route.params.summonerName}`
+            this.$route.params.region}&name=${this.$route.params.summonerName}`
         )
         .then((res) => {
           this.summoner = res.data;

@@ -3,17 +3,16 @@
     <header class="text-light">
       <div class="container-xl">
         <div class="row">
-          <div class="col-xl-6 col-sm-12">
+          <div class="col-xl-6 col-sm-12 col-12">
             <h1 class="pt-3">Leaguer</h1>
             <h2 class="">Your Info Source</h2>
           </div>
-          <div class="col-6">
-            <p>idk</p>
+          <div class="col-sm-6 col-0 d-none d-md-block">
           </div>
         </div>
       </div>
     </header>
-    <SearchSummoner/>
+    <SearchSummoner />
     <div class="purple-bg">
       <div class="container-xl">
         <div class="row">
@@ -34,7 +33,7 @@
 </template>
 
 <script>
-import SearchSummoner from '../components/SearchSummoner.vue'
+import SearchSummoner from "../components/SearchSummoner.vue";
 export default {
   name: "HomeView",
   components: {
@@ -46,7 +45,8 @@ export default {
 <style>
 header {
   background-color: #5383e8;
-  padding: 150px;
+  padding-top: 150px;
+  padding-bottom: 150px;
 }
 .white-box {
   background-color: #ffffff;
@@ -55,5 +55,10 @@ header {
 }
 .purple-bg {
   background-color: #5383e8;
+}
+@media (max-width: 921px) {
+  header {
+    text-align: center;
+  }
 }
 </style>
