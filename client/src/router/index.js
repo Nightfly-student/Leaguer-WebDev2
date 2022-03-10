@@ -115,6 +115,22 @@ const router = createRouter({
   ],
 });
 router.beforeEach((to, from, next) => {
+
+  //Logged in Check//
+  //const publicPages = ['Profile', 'Home', 'Register', 'Login', 'SummonerView'];
+  const preventPages = ['Login'];
+  //const authRequired = !publicPages.includes(to.name);
+  const alreadyLogged = preventPages.includes(to.name);
+  const loggedIn = localStorage.getItem('user');
+
+  //if (authRequired && !loggedIn) {
+   // return next('/login');
+ // }
+  if(alreadyLogged && loggedIn) {
+    return next('/');
+  }
+  
+  //Metadata//
   const nearestWithTitle = to.matched
     .slice()
     .reverse()

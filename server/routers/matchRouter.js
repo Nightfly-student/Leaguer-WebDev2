@@ -37,7 +37,6 @@ matchRouter.get(
         setTimeout(() => resolve("222"), 100);
       });
     };
-    console.log(req.query.region)
     var matchInfo = [];
     var matches = req.query.matches.split(",");
     const promises = matches.map(async (data) => {

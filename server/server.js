@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors'
 import matchRouter from './routers/matchRouter.js';
 import summonerRouter from "./routers/summonerRouter.js";
+import userRouter from "./routers/userRouter.js";
 
 const app = express();
 app.use(cors());
@@ -22,6 +23,7 @@ mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/leaguer", {
 
 app.use("/api/summoners", summonerRouter)
 app.use("/api/matches", matchRouter)
+app.use("/api/users", userRouter)
 
 app.get("/", (req, res) => {
   res.send("Backend of Leaguer <3");

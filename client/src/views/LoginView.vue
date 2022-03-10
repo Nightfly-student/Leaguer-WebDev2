@@ -10,28 +10,40 @@
           />
         </div>
         <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-          <form class="card-white m-1">
+          <Form
+            class="card-white m-1"
+            :validation-schema="schema"
+            @submit="onSubmit"
+          >
             <h2 class="text-center">Login</h2>
             <!-- Email input -->
             <div class="form-outline mb-4">
-              <input
+              <Field
                 type="email"
-                id="form1Example13"
+                name="email"
+                id="email"
                 class="form-control form-control-lg"
               />
-              <label class="form-label" for="form1Example13"
-                >Email address</label
-              >
+              <label class="form-label" for="email">Email address</label>
+              <ErrorMessage
+                class="form-label text-danger float-end"
+                name="email"
+              />
             </div>
 
             <!-- Password input -->
             <div class="form-outline mb-4">
-              <input
+              <Field
                 type="password"
-                id="form1Example23"
+                id="password"
                 class="form-control form-control-lg"
+                name="password"
               />
-              <label class="form-label" for="form1Example23">Password</label>
+              <label class="form-label" for="password">Password</label>
+              <ErrorMessage
+                class="form-label text-danger float-end"
+                name="password"
+              />
               <a class="ps-3" href="#!">Forgot password?</a>
             </div>
 
@@ -49,7 +61,7 @@
                 <router-link to="/register">Don't have an account?</router-link>
               </div>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
@@ -57,8 +69,35 @@
 </template>
 
 <script>
+import { Form, Field, ErrorMessage } from "vee-validate";
+import { mapState, mapActions } from "vuex";
+import * as yup from "yup";
+
 export default {
   name: "LoginView",
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
+  data() {
+    const schema = yup.object({
+      email: yup.string().required().email(),
+      password: yup.string().required("No password provided."),
+    });
+    return {
+      schema,
+    };
+  },
+  computed: {
+    ...mapState("account", ["status"]),
+  },
+  methods: {
+    ...mapActions("account", ["login"]),
+    onSubmit(values) {
+      this.login({ email: values.email, password: values.password });
+    },
+  },
 };
 </script>
 
@@ -73,7 +112,7 @@ export default {
 }
 @media (max-width: 921px) {
   .min-height {
-    height: 100%!important;
+    height: 100% !important;
   }
 }
 </style>

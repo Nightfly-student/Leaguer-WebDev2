@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../helpers/axios-auth";
 
 export default {
   name: "SummonerStats",
@@ -51,7 +51,7 @@ export default {
   mounted() {
     axios
       .get(
-        `${import.meta.env.VITE_SERVER}/api/summoners/info?region=${
+        `/api/summoners/info?region=${
           this.summoner.region
         }&id=${this.summoner.id}`
       )

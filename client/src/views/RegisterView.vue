@@ -10,45 +10,63 @@
           />
         </div>
         <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-          <form class="card-white m-1">
+          <Form
+            :validation-schema="schema"
+            class="card-white m-1"
+            @submit="onSubmit"
+          >
             <h2 class="text-center">Register</h2>
             <div class="form-outline mb-4">
-              <input
+              <Field
                 type="text"
-                id="form1Example13"
+                id="username"
+                name="username"
                 class="form-control form-control-lg"
               />
-              <label class="form-label" for="form1Example13">Username</label>
+              <label class="form-label" for="username">Username</label>
+              <ErrorMessage
+                class="form-label text-danger float-end"
+                name="username"
+              />
             </div>
-            <!-- Email input -->
             <div class="form-outline mb-4">
-              <input
+              <Field
                 type="email"
-                id="form1Example13"
+                id="email"
+                name="email"
                 class="form-control form-control-lg"
               />
-              <label class="form-label" for="form1Example13"
-                >Email address</label
-              >
+              <label class="form-label" for="email">Email address</label>
+              <ErrorMessage
+                class="form-label text-danger float-end"
+                name="email"
+              />
             </div>
-
-            <!-- Password input -->
             <div class="form-outline mb-4">
-              <input
+              <Field
                 type="password"
-                id="form1Example23"
+                id="password"
+                name="password"
                 class="form-control form-control-lg"
               />
-              <label class="form-label" for="form1Example23">Password</label>
+              <label class="form-label" for="password">Password</label>
+              <ErrorMessage
+                class="form-label text-danger float-end"
+                name="password"
+              />
             </div>
-            <!-- Password input -->
             <div class="form-outline mb-4">
-              <input
+              <Field
                 type="password"
-                id="form1Example23"
+                id="repassword"
+                name="repassword"
                 class="form-control form-control-lg"
               />
               <label class="form-label" for="form1Example23">Re-Password</label>
+              <ErrorMessage
+                class="form-label text-danger float-end"
+                name="repassword"
+              />
             </div>
             <div class="text-center">
               <button
@@ -61,7 +79,7 @@
                 <router-link to="/login">Already an Account?</router-link>
               </div>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
@@ -69,16 +87,50 @@
 </template>
 
 <script>
+import { Form, Field, ErrorMessage } from "vee-validate";
+import { mapState, mapActions } from "vuex";
+import * as yup from "yup";
+
 export default {
   name: "RegisterView",
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
+  data() {
+    const schema = yup.object({
+      email: yup.string().required().email(),
+      username: yup.string().required(),
+      password: yup
+        .string()
+        .required("No password provided.")
+        .min(8, "Password is too short - should be 8 chars minimum.")
+        .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
+      repassword: yup
+        .string()
+        .required("Please confirm your password")
+        .oneOf([yup.ref("password"), null], "Passwords don't match."),
+    });
+    return {
+      schema,
+    };
+  },
+  computed: {
+    ...mapState("account", ["status"]),
+  },
   methods: {
-    register() {
-      this.$router.push({ name: "Home" });
+    ...mapActions("account", ["register"]),
+    onSubmit(values) {
+      const user = {
+        name: values.username,
+        email: values.email,
+        password: values.password,
+      };
+      this.register(user);
     },
   },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

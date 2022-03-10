@@ -50,7 +50,17 @@
           </div>
         </div>
         <div class="navbar-nav ms-auto">
-          <router-link to="/login" class="nav-item nav-link">Login</router-link>
+          <router-link v-if="!checkLogged" to="/login" class="nav-item nav-link"
+            >Login</router-link
+          >
+          <a
+            v-else
+            class="nav-item nav-link"
+            href="#"
+            @click="Logout"
+            role="button"
+            >Logout</a
+          >
         </div>
       </div>
     </div>
@@ -58,8 +68,9 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
-  name: "NavBar",
+  name: "MenuBar",
   data() {
     return {
       sum: {
@@ -76,6 +87,13 @@ export default {
         return false;
       }
     },
+    ...mapActions({
+      logout: "account/logout",
+    }),
+    Logout() {
+      this.logout();
+      this.logged = false;
+    },
     search(summoner) {
       this.$router.push({
         name: "Profile",
@@ -85,6 +103,11 @@ export default {
         },
       });
       this.sum.summonerName = "";
+    },
+  },
+  computed: {
+    checkLogged() {
+      return this.$store.state.account.status.loggedIn ? true : false;
     },
   },
 };

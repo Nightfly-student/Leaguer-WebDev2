@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../helpers/axios-auth";
 import SummonerStats from "../components/SummonerStats.vue";
 import SummonerProfile from "../components/SummonerProfile.vue";
 import SummonerMatches from "../components/SummonerMatches.vue";
@@ -38,8 +38,7 @@ export default {
       this.isMounted = false;
       axios
         .get(
-          `${import.meta.env.VITE_SERVER}/api/summoners?region=${
-            this.$route.params.region}&name=${this.$route.params.summonerName}`
+          `/api/summoners?region=${this.$route.params.region}&name=${this.$route.params.summonerName}`
         )
         .then((res) => {
           this.summoner = res.data;
@@ -55,8 +54,10 @@ export default {
     this.update();
   },
   watch: {
-    $route() {
-      this.update();
+    $route(to) {
+      if (to.name == "Profile") {
+        this.update();
+      }
     },
   },
 };

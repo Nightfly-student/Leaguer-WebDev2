@@ -3,11 +3,12 @@ import expressAsyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import User from "../models/user.js";
 import { generateToken } from "../utils.js";
+import e from "express";
 
 const userRouter = express.Router();
 
-userRouter.get(
-  "/",
+userRouter.post(
+  "/login",
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
@@ -20,28 +21,33 @@ userRouter.get(
           token: generateToken(user),
         });
       }
+    } else {
+      res.status(401).send({ message: "Invalid email or password" });
     }
-    res.status(401).send({ message: "Invalid email or password" });
   })
 );
 
 userRouter.post(
-  "/",
-  expressAsyncHandler(async (req, res) => {
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: bcrypt.hashSync(req.body.password, 8),
-    });
-    const createdUser = await user.save();
+  "/register",
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      const user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 8),
+      });
+      const createdUser = await user.save();
 
-    res.send({
-      _id: createdUser._id,
-      name: createdUser.name,
-      email: createdUser.email,
-      isAdmin: createdUser.isAdmin,
-      token: generateToken(createdUser),
-    });
+      res.send(true);
+    } catch (err) {
+      if (err.code && err.code == 11000) {
+        const field = Object.keys(err.keyValue);
+        return res
+          .status(409)
+          .send({message: `An account with that ${field} already exists.`});
+      }
+      next(err);
+    }
   })
 );
 
