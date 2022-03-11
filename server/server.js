@@ -2,12 +2,15 @@ import express from "express";
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors'
+import cookieParser from "cookie-parser";
 import matchRouter from './routers/matchRouter.js';
 import summonerRouter from "./routers/summonerRouter.js";
 import userRouter from "./routers/userRouter.js";
 
 const app = express();
+
 app.use(cors());
+app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

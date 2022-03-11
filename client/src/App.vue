@@ -1,18 +1,6 @@
 <template>
   <div>
-    <div
-      v-if="alert.message"
-      :class="`alert ${alert.type} alert-dismissible fade show position-fixed z-index-alert`"
-      role="alert"
-    >
-      {{ alert.message }}
-      <button
-        type="button"
-        class="btn-close"
-        @click="this.clearAlert()"
-      >
-      </button>
-    </div>
+    <AlertItem />
     <MenuBar />
     <RouterView />
   </div>
@@ -20,36 +8,14 @@
 
 <script>
 import MenuBar from "./components/layout/MenuBar.vue";
-import { mapState, mapActions } from "vuex";
+import AlertItem from "./components/AlertItem.vue";
 
 export default {
   components: {
     MenuBar,
-  },
-  computed: {
-    ...mapState({
-      alert: (state) => state.alert,
-    }),
-  },
-  methods: {
-    ...mapActions({
-      clearAlert: "alert/clear",
-    }),
-  },
-  watch: {
-    $route() {
-      this.clearAlert();
-    },
+    AlertItem,
   },
 };
 </script>
 
-<style>
-.z-index-alert {
-  z-index: 2;
-  bottom: 0;
-  right: 0;
-  margin: 10px;
-  text-align: center;
-}
-</style>
+<style></style>

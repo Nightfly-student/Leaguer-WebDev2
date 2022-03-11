@@ -8,6 +8,7 @@ import HomeView from "../views/HomeView.vue";
 import SummonerView from "../views/SummonerView.vue";
 import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
+import SettingsView from "../views/SettingsView.vue";
 import PageNotFoundView from "../views/PageNotFoundView.vue";
 
 const router = createRouter({
@@ -68,6 +69,24 @@ const router = createRouter({
       },
     },
     {
+      path: "/settings",
+      name: "Settings",
+      component: SettingsView,
+      meta: {
+        title: "Settings",
+        metaTags: [
+          {
+            name: "description",
+            content: "The Settings page of our example app.",
+          },
+          {
+            property: "og:description",
+            content: "The Settings page of our example app.",
+          },
+        ],
+      },
+    },
+    {
       path: "/summoner/:region/:summonerName",
       name: "Profile",
       component: SummonerView,
@@ -117,18 +136,18 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
   //Logged in Check//
-  //const publicPages = ['Profile', 'Home', 'Register', 'Login', 'SummonerView'];
-  const preventPages = ['Login'];
-  //const authRequired = !publicPages.includes(to.name);
-  const alreadyLogged = preventPages.includes(to.name);
-  const loggedIn = localStorage.getItem('user');
+  //const privatePages = ['Settings'];
+  //const preventPages = ['Login'];
+  //const authRequired = !privatePages.includes(to.name);
+  //const alreadyLogged = preventPages.includes(to.name);
+  //const loggedIn = localStorage.getItem('user');
 
-  //if (authRequired && !loggedIn) {
-   // return next('/login');
+ // if (authRequired && !loggedIn) {
+  // return next('/login');
  // }
-  if(alreadyLogged && loggedIn) {
-    return next('/');
-  }
+ // if(alreadyLogged && loggedIn) {
+ //   return next('/');
+ // }
   
   //Metadata//
   const nearestWithTitle = to.matched

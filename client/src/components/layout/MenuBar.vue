@@ -53,14 +53,23 @@
           <router-link v-if="!checkLogged" to="/login" class="nav-item nav-link"
             >Login</router-link
           >
-          <a
-            v-else
-            class="nav-item nav-link"
-            href="#"
-            @click="Logout"
-            role="button"
-            >Logout</a
-          >
+          <div v-else class="dropdown">
+            <a
+              class="nav-item nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Profile
+            </a>
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li><router-link class="dropdown-item" to="/settings">Settings</router-link></li>
+              <li><a class="dropdown-item" role="button" @click="Logout()" href="#">Logout</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -125,6 +134,7 @@ input {
   font-size: 12px;
   margin: 9.5px;
   margin-left: -80px;
+  width: 55px;
   background-color: #dce7ff;
 }
 .styling-search {

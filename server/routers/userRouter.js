@@ -13,13 +13,10 @@ userRouter.post(
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
-        res.send({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          isAdmin: user.isAdmin,
-          token: generateToken(user),
-        });
+        res.cookie("token", generateToken(user), {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        }).status(200).json({message: 'logged in'})
       }
     } else {
       res.status(401).send({ message: "Invalid email or password" });
