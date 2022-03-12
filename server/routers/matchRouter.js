@@ -53,9 +53,7 @@ matchRouter.get(
         .catch((err) => console.log(err));
     });
 
-    await Promise.all(promises).then(() => {
-      console.log('resolved promise.all');
-    });
+    await Promise.all(promises);
     res.status(200).send(matchInfo);
   })
 );

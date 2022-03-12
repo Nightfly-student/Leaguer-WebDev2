@@ -1,8 +1,8 @@
 <template>
   <div>
-    <AlertItem />
     <MenuBar />
     <RouterView />
+    <AlertItem />
   </div>
 </template>
 
