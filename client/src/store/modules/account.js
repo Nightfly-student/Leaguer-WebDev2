@@ -18,7 +18,7 @@ const actions = {
         });
       },
       (error) => {
-        commit("loginFailure", error);
+        commit("loginFailure", error.response.data.message);
         dispatch("alert/error", error.response.data.message, { root: true });
       }
     );
@@ -28,20 +28,70 @@ const actions = {
     commit("logout");
     router.push("/login");
   },
-  register({ dispatch, commit }, user) {
-    commit("registerRequest", user);
-
+  register({ dispatch }, user) {
     userService.register(user).then(
-      (user) => {
-        commit("registerSuccess", user);
+      () => {
         router.push("/login");
         setTimeout(() => {
-          // display success message after route change completes
-          dispatch("alert/success", "Registration successful", { root: true });
+          dispatch("alert/success", "Registration successful", {
+            root: true,
+          });
         });
       },
       (error) => {
-        commit("registerFailure", error);
+        dispatch("alert/error", error.response.data.message, { root: true });
+      }
+    );
+  },
+  updatePassword({ dispatch }, { oldPass, newPass }) {
+    userService.updatePassword(oldPass, newPass).then(
+      () => {
+        setTimeout(() => {
+          dispatch("alert/success", "Updated Password", { root: true });
+        });
+      },
+      (error) => {
+        dispatch("alert/error", error.response.data.message, { root: true });
+      }
+    );
+  },
+  updateUsername({ dispatch }, { username }) {
+    userService.updateUsername(username).then(
+      () => {
+        setTimeout(() => {
+          dispatch("alert/success", "Updated Username", { root: true });
+        });
+      },
+      (error) => {
+        dispatch("alert/error", error.response.data.message, { root: true });
+      }
+    );
+  },
+  updateEmail({ dispatch }, { email }) {
+    userService.updateMail(email).then(
+      () => {
+        setTimeout(() => {
+          dispatch("alert/success", "Updated Email", { root: true });
+        });
+      },
+      (error) => {
+        dispatch("alert/error", error.response.data.message, { root: true });
+      }
+    );
+  },
+  deleteAccount({ dispatch, commit }) {
+    userService.deleteAccount().then(
+      () => {
+        userService.logout();
+        commit("logout");
+        router.push("/");
+        setTimeout(() => {      
+          dispatch("alert/success", "Successfully Deleted Account", {
+            root: true,
+          });
+        });
+      },
+      (error) => {
         dispatch("alert/error", error.response.data.message, { root: true });
       }
     );
@@ -64,15 +114,6 @@ const mutations = {
   logout(state) {
     state.status = {};
     state.user = null;
-  },
-  registerRequest(state) {
-    state.status = { registering: true };
-  },
-  registerSuccess(state) {
-    state.status = {};
-  },
-  registerFailure(state) {
-    state.status = {};
   },
 };
 

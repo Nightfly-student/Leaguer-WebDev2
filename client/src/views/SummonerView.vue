@@ -1,11 +1,16 @@
 <template>
   <div class="container-xl pt-4">
-    <SummonerProfile @update="update()" v-if="isMounted" :summoner="summoner" />
+    <SummonerProfile
+      @update="update()"
+      v-if="isMounted && found"
+      :summoner="summoner"
+    />
+    <h1 class="text-center" v-if="!found">Summoner does not exist</h1>
     <hr />
     <div class="row">
-      <SummonerStats v-if="isMounted" :summoner="summoner" />
+      <SummonerStats v-if="isMounted && found" :summoner="summoner" />
       <SummonerMatches
-        v-if="isMounted"
+        v-if="isMounted && found"
         :summoner="summoner"
         :trigger="trigger"
       />
@@ -31,6 +36,7 @@ export default {
       summoner: [],
       isMounted: false,
       trigger: 0,
+      found: false,
     };
   },
   methods: {
@@ -41,12 +47,15 @@ export default {
           `/api/summoners?region=${this.$route.params.region}&name=${this.$route.params.summonerName}`
         )
         .then((res) => {
-          this.summoner = res.data;
-          this.isMounted = true;
-          this.trigger++;
+          if (res.status === 200) {
+            this.summoner = res.data;
+            this.isMounted = true;
+            this.found = true;
+            this.trigger++;
+          }
         })
-        .catch((err) => {
-          console.warn(err);
+        .catch(() => {
+          this.found = false;
         });
     },
   },

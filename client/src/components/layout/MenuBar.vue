@@ -66,8 +66,20 @@
             </a>
 
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <li><router-link class="dropdown-item" to="/settings">Settings</router-link></li>
-              <li><a class="dropdown-item" role="button" @click="Logout()" href="#">Logout</a></li>
+              <li>
+                <router-link class="dropdown-item" to="/settings"
+                  >Settings</router-link
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  role="button"
+                  @click="Logout()"
+                  href="#"
+                  >Logout</a
+                >
+              </li>
             </ul>
           </div>
         </div>
@@ -101,7 +113,6 @@ export default {
     }),
     Logout() {
       this.logout();
-      this.logged = false;
     },
     search(summoner) {
       this.$router.push({

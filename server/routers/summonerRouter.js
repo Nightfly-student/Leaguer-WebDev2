@@ -7,7 +7,6 @@ const summonerRouter = express.Router();
 summonerRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
-    var data = {};
     await axios
       .get(
         `https://${req.query.region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(req.query.name)}`,
@@ -20,20 +19,25 @@ summonerRouter.get(
           },
         }
       )
-      .then((res) => {
-        data = {
-          id: res.data.id,
-          name: res.data.name,
-          puuid: res.data.puuid,
-          icon: res.data.profileIconId,
-          level: res.data.summonerLevel,
+      .then((response) => {
+        var data = {
+          id: response.data.id,
+          name: response.data.name,
+          puuid: response.data.puuid,
+          icon: response.data.profileIconId,
+          level: response.data.summonerLevel,
           region: req.query.region,
         };
+        res.status(200).send(data);
       })
       .catch((err) => {
-        res.status(401).send({ message: "Unauthorized" });
+        if(err.response.status === 404) {
+          res.status(404).send({ message: err.message }); 
+        }
+        if(err.response.status === 401) {
+          res.status(401).send({ message: "Unauthorized" });
+        }
       });
-    res.status(200).send(data);
   })
 );
 summonerRouter.get(
