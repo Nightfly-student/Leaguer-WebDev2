@@ -2,29 +2,62 @@ import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import User from "../models/user.js";
-import { generateToken, isAuth } from "../utils.js";
+import { generateToken, isAdmin, isAuth } from "../utils.js";
 import e from "express";
 
 const userRouter = express.Router();
 
-userRouter.post(
-  "/login",
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findOne({ email: req.body.email });
-    if (user) {
-      if (bcrypt.compareSync(req.body.password, user.password)) {
-        res.status(200).send({
-          _id: user._id,
-          name: user.name,
-          token: generateToken(user),
-        });
+//GetUser//
+userRouter.get(
+  "/:id",
+  isAuth,
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      if (req.params.id === req.user._id) {
+        const user = await User.findById(req.params.id);
+        if (user) {
+          res.status(200).send({
+            name: user.name,
+            email: user.email,
+          });
+        } else {
+          res.status(404).send({ message: "No User Found" });
+        }
+      } else {
+        res.status(401).send({ message: "Invalid User" });
       }
-    } else {
-      res.status(409).send({ message: "Invalid email or password" });
+    } catch (err) {
+      next(err);
     }
   })
 );
 
+//Login//
+userRouter.post(
+  "/login",
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      const user = await User.findOne({ email: req.body.email });
+      if (user) {
+        if (bcrypt.compareSync(req.body.password, user.password)) {
+          res.status(200).send({
+            _id: user._id,
+            isAdmin: user.isAdmin,
+            token: generateToken(user),
+          });
+        } else {
+          res.status(409).send({ message: "Invalid email or password" });
+        }
+      } else {
+        res.status(409).send({ message: "Invalid email or password" });
+      }
+    } catch (err) {
+      next(err);
+    }
+  })
+);
+
+//Register User//
 userRouter.post(
   "/register",
   expressAsyncHandler(async (req, res, next) => {
@@ -51,7 +84,7 @@ userRouter.post(
 
 //update password//
 userRouter.put(
-  "/password/:id",
+  "/:id/password",
   isAuth,
   expressAsyncHandler(async (req, res, next) => {
     try {
@@ -89,9 +122,9 @@ userRouter.put(
     }
   })
 );
-//change username//
+//update username//
 userRouter.put(
-  "/username/:id",
+  "/:id/username",
   isAuth,
   expressAsyncHandler(async (req, res, next) => {
     try {
@@ -125,8 +158,9 @@ userRouter.put(
   })
 );
 
+//update email//
 userRouter.put(
-  "/email/:id",
+  "/:id/email",
   isAuth,
   expressAsyncHandler(async (req, res, next) => {
     try {
@@ -158,16 +192,63 @@ userRouter.put(
   })
 );
 
-//delete user//
+//secure delete user//
 userRouter.delete(
   "/:id",
   isAuth,
-  expressAsyncHandler(async (req, res) => {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (user) {
-      res.status(200).send({ message: "Successfully Deleted Account" });
-    } else {
-      res.status(409).send({ message: "Invalid Account" });
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      if (req.user._id === req.params.id) {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (user) {
+          res.status(200).send({ message: "Successfully Deleted Account" });
+        } else {
+          res.status(409).send({ message: "Invalid Account" });
+        }
+      } else {
+        res.status(401).send({ message: "Invalid User" });
+      }
+    } catch (err) {
+      next(err);
+    }
+  })
+);
+
+//get all users//
+userRouter.get(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      const users = await User.find({});
+      if (users) {
+        res.status(200).send(users);
+      } else {
+        res.status(404).send({ message: "No Users Found" });
+      }
+    } catch (err) {
+      next(err);
+    }
+  })
+);
+
+// delete admin route //
+userRouter.delete(
+  "/:id/admin",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      const user = await User.findByIdAndDelete(req.params.id);
+      if(user) {
+        res.status(200).send({message: "Deleted Account"});
+      } else {
+        res.status(404).send({message: "Account Not Found"});
+      }
+
+    }catch(err) {
+      next(err);
     }
   })
 );

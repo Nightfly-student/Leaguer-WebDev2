@@ -10,6 +10,8 @@ import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import SettingsView from "../views/SettingsView.vue";
 import PageNotFoundView from "../views/PageNotFoundView.vue";
+import AdminDashboard from "../views/AdminDashboard.vue";
+import { adminRoute, userRoute } from "../helpers/auth-header";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,6 +74,7 @@ const router = createRouter({
       path: "/settings",
       name: "Settings",
       component: SettingsView,
+      beforeEnter: userRoute,
       meta: {
         title: "Settings",
         metaTags: [
@@ -82,6 +85,25 @@ const router = createRouter({
           {
             property: "og:description",
             content: "The Settings page of our example app.",
+          },
+        ],
+      },
+    },
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      component: AdminDashboard,
+      beforeEnter: adminRoute,
+      meta: {
+        title: "Dashboard",
+        metaTags: [
+          {
+            name: "description",
+            content: "The Admin page of our example app.",
+          },
+          {
+            property: "og:description",
+            content: "The Admin page of our example app.",
           },
         ],
       },
@@ -134,21 +156,6 @@ const router = createRouter({
   ],
 });
 router.beforeEach((to, from, next) => {
-
-  //Logged in Check//
-  //const privatePages = ['Settings'];
-  //const preventPages = ['Login'];
-  //const authRequired = !privatePages.includes(to.name);
-  //const alreadyLogged = preventPages.includes(to.name);
-  //const loggedIn = localStorage.getItem('user');
-
- // if (authRequired && !loggedIn) {
-  // return next('/login');
- // }
- // if(alreadyLogged && loggedIn) {
- //   return next('/');
- // }
-  
   //Metadata//
   const nearestWithTitle = to.matched
     .slice()

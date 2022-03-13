@@ -15,8 +15,6 @@
           <router-link class="nav-item nav-link active" to="/"
             >Home</router-link
           >
-          <a href="#" class="nav-item nav-link">Champions</a>
-          <a href="#" class="nav-item nav-link">Messages</a>
           <div
             v-if="!homePageCheck()"
             href="#"
@@ -66,6 +64,11 @@
             </a>
 
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li v-if="checkIsAdmin">
+                <router-link class="dropdown-item" to="/dashboard"
+                  >Dashboard</router-link
+                >
+              </li>
               <li>
                 <router-link class="dropdown-item" to="/settings"
                   >Settings</router-link
@@ -128,6 +131,9 @@ export default {
   computed: {
     checkLogged() {
       return this.$store.state.account.status.loggedIn ? true : false;
+    },
+    checkIsAdmin() {
+      return this.$store.state.account.status.isAdmin ? true : false;
     },
   },
 };

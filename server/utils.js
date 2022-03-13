@@ -5,6 +5,7 @@ export const generateToken = (user) => {
   return jwt.sign(
     {
       _id: user._id,
+      isAdmin: user.isAdmin,
     },
     process.env.JWT_SECRET || "somethingsecret",
     {
@@ -35,8 +36,7 @@ export const isAuth = (req, res, next) => {
 };
 
 export const isAdmin = (req, res, next) => {
-  const user = User.findById(req.user._id);
-  if (user && user.isAdmin) {
+  if (req.user && req.user.isAdmin) {
     next();
   } else {
     res.status(401).send({ message: "Invalid Admin Token" });

@@ -5,7 +5,9 @@
       v-if="isMounted && found"
       :summoner="summoner"
     />
-    <h1 class="text-center" v-if="!found">Summoner does not exist</h1>
+    <h1 class="text-center" v-if="!found && isMounted">
+      Summoner does not exist
+    </h1>
     <hr />
     <div class="row">
       <SummonerStats v-if="isMounted && found" :summoner="summoner" />
@@ -56,6 +58,7 @@ export default {
         })
         .catch(() => {
           this.found = false;
+          this.isMounted = true;
         });
     },
   },

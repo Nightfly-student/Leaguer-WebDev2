@@ -3,7 +3,7 @@ import router from "../../router/index";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const state = user
-  ? { status: { loggedIn: true }, user }
+  ? { status: { loggedIn: true, isAdmin: user.isAdmin }, user }
   : { status: {}, user: null };
 
 const actions = {
@@ -85,7 +85,7 @@ const actions = {
         userService.logout();
         commit("logout");
         router.push("/");
-        setTimeout(() => {      
+        setTimeout(() => {
           dispatch("alert/success", "Successfully Deleted Account", {
             root: true,
           });
@@ -99,13 +99,13 @@ const actions = {
 };
 
 const mutations = {
-  loginRequest(state, user) {
+  loginRequest(state, payload) {
     state.status = { loggingIn: true };
-    state.user = user;
+    state.user = payload;
   },
-  loginSuccess(state, user) {
-    state.status = { loggedIn: true };
-    state.user = user;
+  loginSuccess(state, payload) {
+    state.status = { loggedIn: true, isAdmin: payload.isAdmin };
+    state.user = payload;
   },
   loginFailure(state) {
     state.status = {};

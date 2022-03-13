@@ -18,12 +18,12 @@
         <div class="row">
           <div class="col-xl-6 col-md-12 pt-4">
             <div class="white-box">
-              <h2 class="text-center">Learn More About...</h2>
+              <h2 class="text-center">Must Watch Players</h2>
             </div>
           </div>
           <div class="col-xl-6 col-md-12 pt-4">
             <div class="white-box">
-              <h2 class="text-center">Cool other stuff...</h2>
+              <h2 class="text-center">Latest Searches</h2>
             </div>
           </div>
         </div>

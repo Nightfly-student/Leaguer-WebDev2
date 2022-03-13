@@ -10,7 +10,6 @@ export const userService = {
   updateUsername,
   updateMail,
 };
-
 function login(email, password) {
   return axios
     .post("/api/users/login", {
@@ -24,22 +23,26 @@ function login(email, password) {
       return user.data;
     });
 }
+
 function logout() {
   localStorage.removeItem("user");
 }
+
 function register(user) {
   return axios.post("/api/users/register", user);
 }
+
 function updatePassword(oldPass, newPass) {
   return axios.put(
-    `/api/users/password/${getId()}`,
+    `/api/users/${getId()}/password`,
     { oldPass: oldPass, newPass: newPass },
     { headers: authHeader() }
   );
 }
+
 function updateUsername(username) {
   return axios.put(
-    `/api/users/username/${getId()}`,
+    `/api/users/${getId()}/username`,
     { name: username },
     { headers: authHeader() }
   );
@@ -47,7 +50,7 @@ function updateUsername(username) {
 
 function updateMail(email) {
   return axios.put(
-    `/api/users/email/${getId()}`,
+    `/api/users/${getId()}/email`,
     { email: email },
     { headers: authHeader() }
   );

@@ -9,7 +9,17 @@
       >
         <a
           class="nav-link link-dark"
-          :class="{ active: CP }"
+          :class="{ activePill: PR }"
+          @click="changeTab('PR')"
+          id="CP"
+          data-toggle="pill"
+          href="#"
+          role="tab"
+          >Profile</a
+        >
+        <a
+          class="nav-link link-dark"
+          :class="{ activePill: CP }"
           @click="changeTab('CP')"
           id="CP"
           data-toggle="pill"
@@ -19,7 +29,7 @@
         >
         <a
           class="nav-link link-dark"
-          :class="{ active: CU }"
+          :class="{ activePill: CU }"
           @click="changeTab('CU')"
           id="CU"
           data-toggle="pill"
@@ -29,7 +39,7 @@
         >
         <a
           class="nav-link link-dark"
-          :class="{ active: CE }"
+          :class="{ activePill: CE }"
           @click="changeTab('CE')"
           id="CE"
           data-toggle="pill"
@@ -40,6 +50,7 @@
       </div>
     </div>
     <div class="col-md-6 col-sm-12 col-12">
+      <ProfileItem v-if="PR" />
       <UpdatePassword v-if="CP" />
       <UpdateUsername v-if="CU" />
       <UpdateEmail v-if="CE" />
@@ -48,6 +59,7 @@
 </template>
 
 <script>
+import ProfileItem from "./ProfileItem.vue";
 import UpdatePassword from "./UpdatePassword.vue";
 import UpdateUsername from "./UpdateUsername.vue";
 import UpdateEmail from "./UpdateEmail.vue";
@@ -57,10 +69,12 @@ export default {
     UpdatePassword,
     UpdateUsername,
     UpdateEmail,
+    ProfileItem,
   },
   data() {
     return {
-      CP: true,
+      PR: true,
+      CP: false,
       CU: false,
       CE: false,
     };
@@ -70,10 +84,19 @@ export default {
       this.CP = false;
       this.CU = false;
       this.CE = false;
+      this.PR = false;
       this[value] = true;
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+.activePill {
+  background-color: #5383e8 !important;
+  color: white !important;
+}
+.btn-primary {
+  background-color: #5383e8 !important;
+}
+</style>
