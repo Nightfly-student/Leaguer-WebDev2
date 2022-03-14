@@ -7,8 +7,7 @@
             <h1 class="pt-3">Leaguer</h1>
             <h2 class="">Your Info Source</h2>
           </div>
-          <div class="col-sm-6 col-0 d-none d-md-block">
-          </div>
+          <div class="col-sm-6 col-0 d-none d-md-block"></div>
         </div>
       </div>
     </header>
@@ -23,7 +22,8 @@
           </div>
           <div class="col-xl-6 col-md-12 pt-4">
             <div class="white-box">
-              <h2 class="text-center">Latest Searches</h2>
+              <h2 class="text-center">Champion Rotation</h2>
+              <ChampionRotation />
             </div>
           </div>
         </div>
@@ -33,11 +33,13 @@
 </template>
 
 <script>
-import SearchSummoner from "../components/SearchSummoner.vue";
+import SearchSummoner from "../components/summoner/SearchSummoner.vue";
+import ChampionRotation from "../components/ChampionRotation.vue";
 export default {
   name: "HomeView",
   components: {
     SearchSummoner,
+    ChampionRotation,
   },
 };
 </script>

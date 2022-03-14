@@ -16,7 +16,12 @@
           <th scope="row">{{ user._id }}</th>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.isAdmin }}</td>
+          <td>
+            <select @change="updateRole(user._id)" v-model="user.isAdmin">
+              <option value="true">true</option>
+              <option value="false">false</option>
+            </select>
+          </td>
           <td>
             <button @click="deleteUser(user._id)" class="btn btn-danger">
               Delete
@@ -72,6 +77,20 @@ export default {
             console.warn(err.response.data.message);
           });
       }
+    },
+    updateRole(id) {
+      var state =
+        this.users[this.users.findIndex((user) => user._id === id)].isAdmin;
+      axios
+        .put(
+          `/api/users/${id}/admin`,
+          { state: state },
+          { headers: authHeader() }
+        )
+        .then((res) => {
+          alert(res.data.message);
+        })
+        .catch((err) => alert(err.response.data.message));
     },
   },
   mounted() {

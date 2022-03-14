@@ -6,6 +6,7 @@ import { isAdmin, isAuth } from "../utils.js";
 
 const summonerRouter = express.Router();
 
+//Get Basic Information of Summoner//
 summonerRouter.get(
   "/",
   expressAsyncHandler(async (req, res) => {
@@ -46,6 +47,8 @@ summonerRouter.get(
       });
   })
 );
+
+//Get Detailed Information of Summoner//
 summonerRouter.get(
   "/info",
   expressAsyncHandler(async (req, res) => {
@@ -92,6 +95,8 @@ summonerRouter.get(
     res.status(200).send(data);
   })
 );
+
+//Post Summoner//
 summonerRouter.post(
   "/",
   isAuth,
@@ -103,13 +108,51 @@ summonerRouter.post(
         region: req.body.region,
       });
       const createdSummoner = await summoner.save();
-      res.status(201).send(true);
+      res.status(201).send(createdSummoner);
+    } catch (err) {
+      next(err);
+    }
+  })
+);
+//Delete Summoner//
+summonerRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      const deleteUser = await Summoner.findByIdAndDelete(req.params.id);
+      if (deleteUser) {
+        res.status(200).send({ message: "Deleted User" });
+      } else {
+        res.status(404).send({ message: "Couldn't find Summoner" });
+      }
     } catch (err) {
       next(err);
     }
   })
 );
 
+//Admin Route List View//
+summonerRouter.get(
+  "/list",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      const summoners = await Summoner.find({});
+      if (summoners) {
+        res.status(200).send(summoners);
+      } else {
+        res.status(404).send({ message: "Summoners Not Found" });
+      }
+    } catch (err) {
+      next(err);
+    }
+  })
+);
+
+//Home Page Must Watch Summoners with Details//
 summonerRouter.get(
   "/mustwatch",
   expressAsyncHandler(async (res, next) => {

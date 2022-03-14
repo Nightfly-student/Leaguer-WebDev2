@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import matchRouter from './routers/matchRouter.js';
 import summonerRouter from "./routers/summonerRouter.js";
 import userRouter from "./routers/userRouter.js";
+import championRouter from "./routers/championRouter.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/leaguer", {
 app.use("/api/summoners", summonerRouter)
 app.use("/api/matches", matchRouter)
 app.use("/api/users", userRouter)
+app.use("/api/champions", championRouter);
 
 app.get("/", (req, res) => {
   res.send("Backend of Leaguer <3");
@@ -35,7 +37,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-
-
-//TODO
-//Origin Riot API's Check

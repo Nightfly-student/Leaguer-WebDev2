@@ -1,6 +1,29 @@
 <template>
   <div>
     <h2 class="fs-4">Add Summoner</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Summoner Name</th>
+          <th scope="col">Region</th>
+          <th scope="col">Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="summoner in summoners" :key="summoner._id">
+          <td>{{ summoner.name }}</td>
+          <td>{{ summoner.region }}</td>
+          <td>
+            <button
+              @click="deleteSummoner(summoner._id)"
+              class="btn btn-danger"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <input
       v-model="sum.summonerName"
       placeholder="Summoner Name"
@@ -40,7 +63,7 @@ export default {
   name: "AddSummoner",
   data() {
     return {
-      users: [],
+      summoners: [],
       sum: {
         summonerName: "",
         region: "euw1",
@@ -68,18 +91,49 @@ export default {
           { name: this.sum.summonerName, region: this.sum.region },
           { headers: authHeader() }
         )
-        .then(() => {
+        .then((res) => {
           alert(
             `added ${this.sum.summonerName} from region ${this.sum.region}`
           );
+          this.summoners.push({
+            _id: res.data._id,
+            name: res.data.name,
+            region: res.data.region,
+          });
         })
         .catch((err) => {
           alert(err.response.data.message);
         });
     },
+    deleteSummoner(id) {
+      if (confirm("Are you sure?")) {
+        axios
+          .delete(`/api/summoners/${id}`, { headers: authHeader() })
+          .then((res) => {
+            alert(res.data.message);
+            var findIndex = this.summoners.findIndex(
+              (summoner) => summoner._id === id
+            );
+            this.summoners.splice(findIndex, 1);
+          })
+          .catch((err) => {
+            alert(err.response.data.message);
+          });
+      }
+    },
     onClick() {
       this.checkSummoner();
     },
+  },
+  mounted() {
+    axios
+      .get("/api/summoners/list", { headers: authHeader() })
+      .then((res) => {
+        this.summoners = res.data;
+      })
+      .catch((err) => {
+        console.warn(err.response.data.message);
+      });
   },
 };
 </script>

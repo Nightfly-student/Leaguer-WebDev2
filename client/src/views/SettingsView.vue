@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import ProfileSettings from "../components/ProfileSettings.vue";
-import AdvancedSettings from "../components/AdvancedSettings.vue";
+import ProfileSettings from "../components/settings/ProfileSettings.vue";
+import AdvancedSettings from "../components/settings/AdvancedSettings.vue";
 
 export default {
   name: "SettingsView",

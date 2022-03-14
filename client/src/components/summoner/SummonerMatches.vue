@@ -19,7 +19,7 @@
 
 <script>
 import axios from "axios";
-import MatchItem from "../components/MatchItem.vue";
+import MatchItem from "./MatchItem.vue";
 import moment from "moment";
 
 export default {

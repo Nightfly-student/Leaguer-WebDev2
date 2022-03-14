@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import axios from "../helpers/axios-auth";
-import { getId, authHeader } from "../helpers/auth-header";
+import axios from "../../helpers/axios-auth";
+import { getId, authHeader } from "../../helpers/auth-header";
 export default {
   name: "ProfileItem",
   data() {

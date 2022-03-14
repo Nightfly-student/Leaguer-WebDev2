@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axios from "../helpers/axios-auth";
+import axios from "../../helpers/axios-auth";
 
 export default {
   name: "SummonerStats",

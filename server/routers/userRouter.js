@@ -241,13 +241,33 @@ userRouter.delete(
   expressAsyncHandler(async (req, res, next) => {
     try {
       const user = await User.findByIdAndDelete(req.params.id);
-      if(user) {
-        res.status(200).send({message: "Deleted Account"});
+      if (user) {
+        res.status(200).send({ message: "Deleted Account" });
       } else {
-        res.status(404).send({message: "Account Not Found"});
+        res.status(404).send({ message: "Account Not Found" });
       }
+    } catch (err) {
+      next(err);
+    }
+  })
+);
 
-    }catch(err) {
+// Update Role User //
+userRouter.put(
+  "/:id/admin",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res, next) => {
+    try {
+      const user = await User.findById(req.params.id);
+      if (user) {
+        user.isAdmin = req.body.state;
+        const updatedUser = user.save();
+        res.status(200).send({ message: "Updated Role" });
+      } else {
+        res.status(404).send({ message: "Can't Find user" });
+      }
+    } catch (err) {
       next(err);
     }
   })

@@ -22,9 +22,9 @@
 
 <script>
 import axios from "../helpers/axios-auth";
-import SummonerStats from "../components/SummonerStats.vue";
-import SummonerProfile from "../components/SummonerProfile.vue";
-import SummonerMatches from "../components/SummonerMatches.vue";
+import SummonerStats from "../components/summoner/SummonerStats.vue";
+import SummonerProfile from "../components/summoner/SummonerProfile.vue";
+import SummonerMatches from "../components/summoner/SummonerMatches.vue";
 
 export default {
   name: "SummonerView",
