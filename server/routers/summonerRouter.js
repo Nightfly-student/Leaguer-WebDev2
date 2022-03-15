@@ -155,11 +155,18 @@ summonerRouter.get(
 //Home Page Must Watch Summoners with Details//
 summonerRouter.get(
   "/mustwatch",
-  expressAsyncHandler(async (res, next) => {
+  expressAsyncHandler(async (req, res, next) => {
     try {
-      const summoners = Summoner.find({});
+      const summoners = await Summoner.find({});
       if (summoners) {
         var players = [];
+
+        const timeout = () => {
+          return new Promise((resolve) => {
+            setTimeout(() => resolve("222"), 100);
+          });
+        };
+
         const promises = summoners.map(async (data) => {
           let waitForThisData = await timeout(data);
           return axios
@@ -195,7 +202,7 @@ summonerRouter.get(
         const playerData = [];
 
         const promisesDetails = players.map(async (player) => {
-          let waitForThisData = await timeout(data);
+          let waitForThisData = await timeout(player);
           return axios
             .get(
               `https://${player.region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${player.id}`,
@@ -217,6 +224,9 @@ summonerRouter.get(
               });
               if (exists) {
                 var playerDetails = {
+                  name: player.name,
+                  icon: player.icon,
+                  region: player.region,
                   tier: response.data[index].tier,
                   rank: response.data[index].rank,
                   wins: response.data[index].wins,

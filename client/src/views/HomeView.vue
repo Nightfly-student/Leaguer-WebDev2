@@ -18,6 +18,7 @@
           <div class="col-xl-6 col-md-12 pt-4">
             <div class="white-box">
               <h2 class="text-center">Must Watch Players</h2>
+              <MustWatchItem />
             </div>
           </div>
           <div class="col-xl-6 col-md-12 pt-4">
@@ -35,11 +36,13 @@
 <script>
 import SearchSummoner from "../components/summoner/SearchSummoner.vue";
 import ChampionRotation from "../components/ChampionRotation.vue";
+import MustWatchItem from "../components/MustWatchItem.vue";
 export default {
   name: "HomeView",
   components: {
     SearchSummoner,
     ChampionRotation,
+    MustWatchItem,
   },
 };
 </script>
